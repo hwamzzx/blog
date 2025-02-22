@@ -36,7 +36,7 @@ $p$ and $q$
 
 
 ## Rabin Algorithm
-Unlike the RSA cryptosystem, which typically selects a public exponent $1< for encryption, the Rabin cryptosystem fixes the public exponent at $e=2$. As a result, its encryption process can be faster than RSA due to the smaller exponent.
+Unlike the RSA cryptosystem, which typically selects a public exponent $1<e<φ(n)$ for encryption, the Rabin cryptosystem fixes the public exponent at $e=2$. As a result, its encryption process can be faster than RSA due to the smaller exponent.
 
 ### Key Generation
 1. Choose two distinct primes $p$ and $q$ of the form $4k + 3$ ,for some integer $k \in \mathbb{Z}$.
