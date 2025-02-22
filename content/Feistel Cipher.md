@@ -37,7 +37,8 @@ $L'_0$ is XORed with $F(k, R'_0)$, resulting in the left half of the plaintext $
 The decryption process can be represented mathematically as follows:
 $$
 L'_1 = L'_0 \oplus F(k, R'_0)
-$$$$
+$$
+$$
 R'_1 = R'_0
 $$
 
@@ -61,7 +62,7 @@ To address this issue, Feistel Cipher structures are designed with multiple roun
 ![[Feistel_cipher(2).png]]
 The diagram above illustrates a Feistel structure with multiple rounds, as opposed to a single round.
 
-#### Encryption Process
+**Encryption Process**
 
 Unlike the single-round Feistel structure, in a multi-round Feistel Cipher, the right half of the plaintext ($R_0$) does not directly become the right half of the ciphertext ($R_1$). Instead, it becomes the left half of the output ($L_1$). Additionally, the XOR computation that previously resulted in $L_1$ in the single-round structure now determines $R_1$. In other words, the outputs of the left and right halves are swapped after each round.
 In the second round, $L_1$ undergoes further encryption, ensuring that both $L_0$ and $R_0$ are processed through the encryption rounds.
@@ -78,7 +79,7 @@ $$
 R_2 = R_{n-1}
 $$
 
-#### Decryption Process
+**Decryption Process**
 
 The decryption process mirrors the encryption process, with the only difference being the reverse order of the keys used during the computation.
 The following equation represents the decryption process in a two-round Feistel structure.
