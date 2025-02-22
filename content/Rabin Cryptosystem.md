@@ -50,22 +50,44 @@ In summary, the key elements in the Rabin cryptosystem are:
 ### Encryption
 1. Given a plaintext $m \in \mathbb{Z_n}$ and the public key $n$.
 2. Compute the ciphertext:
-	$$c≡m^2(\mod n)$$
+	$$
+	c≡m^2(\mod n)
+	$$
 
 ### Decryption
 1. Using the private key $(p, q)$, compute:
-	$$c_p=c\mod p$$
-	$$c_q=c\mod q$$
+	$$
+	c_p=c\mod p
+	$$
+	$$
+	c_q=c\mod q
+	$$
 2. Solve the corresponding quadratic congruences for $c_p$ and $c_q$:
-	$$a_1​≡c_p^{{p+1}/4}​​\mod p$$
-	$$a_2≡-c_p^{{p+1}/4}​​\mod p$$
-	$$b_1≡c_q^{{q+1}/4}​​\mod q$$
-	$$b_2≡-c_q^{{q+1}/4}​​\mod q$$
+	$$
+	a_1​≡c_p^{{p+1}/4}​​\mod p
+	$$
+	$$
+	a_2≡-c_p^{{p+1}/4}​​\mod p
+	$$
+	$$
+	b_1≡c_q^{{q+1}/4}​​\mod q
+	$$
+	$$
+	b_2≡-c_q^{{q+1}/4}​​\mod q
+	$$
 3. Use the Chinese Remainder Theorem (CRT) to combine these results:
-	$$m_1=CRT(a_1, b_1, p, q)$$
-	$$m_2=CRT(a_1, b_2, p, q)$$
-	$$m_3=CRT(a_2, b_1, p, q)$$
-	$$m_4=CRT(a_2, b_2, p, q)$$
+	$$
+	m_1=CRT(a_1, b_1, p, q)
+	$$
+	$$
+	m_2=CRT(a_1, b_2, p, q)
+	$$
+	$$
+	m_3=CRT(a_2, b_1, p, q)
+	$$
+	$$
+	m_4=CRT(a_2, b_2, p, q)
+	$$
 4. One of the values among $m_1, m_2, m_3, m_4$ is the actual plaintext.
 
 
