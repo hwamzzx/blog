@@ -1,45 +1,45 @@
 
 ## Intro
-PKI(Public Key Infrastructure)은 전자 상에서 안전한 정보를 교환하고, 사용자의 신원과 데이터를 보호하기 위해 공개키 암호 방식을 사용하는 기반 시스템을 말한다. PKI는 인증서 발급 및 관리를 담당하는 기관(Certificate Authority, CA)과 공개키/개인키 쌍을 운용하는 사용자(또는 기관) 간에 이루어지는 일련의 정책, 절차, 소프트웨어, 하드웨어, 암호 기법 등을 아우르는 총체적인 인프라 구조이다.
+PKI (Public Key Infrastructure) is an infrastructure system that uses public key cryptography to securely exchange information in electronic environments and protect the identity and data of users. PKI is a comprehensive infrastructure that encompasses a series of policies, procedures, software, hardware, cryptographic techniques, and more, carried out between an organization responsible for issuing and managing certificates (Certificate Authority, CA) and the user (or organization) that operates the pair of public and private keys.
 
-일반적으로 대칭키 암호시스템에서 사용자들 간 키 교환을 위해서는 사전에 서로 공유된 비밀 값을 사용해야 한다. 또는 비밀 값 없이 Diffie-Hellman 키 교환 프로토콜 등을 적용할 수 있지만, 중간자 공격에 노출될 가능성이 있기에 완전히 안전한 방법이라고 보기 어렵다.
-또 다른 방법으로는 키 분배 센터(Key Distribution Center)를 통해 비밀키를 공유하는 방식이 있는데, 이 경우 신뢰할 수 있는 제3자에게 의존한다. 하지만 사용자 또는 시스템 단말이 많아지고 비밀키 종류가 늘어날수록 키 관리와 분배 과정에서 시스템 과부하가 발생할 가능성이 크다.
-이와 반대로 공개키 암호시스템을 적용하면 사용자들이 신뢰기관을 반드시 거치지 않아도 되고, 각자 자신의 비밀키만 안전하게 관리하기만 하면 되므로 비교적 간단하고 안전한 키 교환 프로토콜을 설계할 수 있다.
+In general, in symmetric key cryptosystems, users must use a pre-shared secret value to exchange keys. Alternatively, protocols such as Diffie-Hellman key exchange can be applied without a pre-shared secret value, but there is a possibility of exposure to man-in-the-middle attacks, so it is not considered a completely safe method. Another approach involves using a Key Distribution Center (KDC) to share a secret key, which relies on a trusted third party. However, as the number of users or system terminals increases and the variety of secret keys grows, there is a greater likelihood that the system could become overloaded during key management and distribution.
 
-
-
-## 공개키 공개
-공개키 암호시스템에서 가장 중요한 것은 안전하게 공개키를 공개하는 것이다. 예를 들어, Bob이 자신의 공개키를 인터넷에 공개했다고 하자. Alice는 Bob에게 메시지를 전송하기 위해 인터넷에서 Bob의 공개키를 얻을 수 있다. 그러나 이때 Alice가 얻은 공개키가 실제로 Bob의 것인지 확인할 수 있는 방법이 없다면 문제가 발생한다. 만약 악의적인 공격자가 자신의 공개키를 마치 Bob의 공개키인 것처럼 위장한다면, Alice가 보내는 메시지는 실제 Bob이 아닌 공격자에게 전달될 수 있으므로 심각한 보안 위협이 초래된다.
-
-### 신뢰할 수 있는 서버를 통한 공개키 공개
-위와 같은 문제를 해결하기 위해서는 신뢰할 수 있는 서버를 이용하여 안전한 환경에서 공개키를 공개하는 방법을 고려할 수 있다. 이 신뢰할 수 있는 서버는 Bob의 공개키가 실제로 Bob의 것임을 보증해 주기 때문에, 공격자가 자신의 공개키를 Bob의 것으로 위장하기가 매우 어렵다.
-이를 위해 Bob은 공개키를 해당 서버에 등록하기 전에 자신이 Bob임을 서버에게 증명해야 한다. 서버가 이를 검증하면, 그제야 Bob의 공개키가 공식적으로 등록된다. 이렇게 하면 사용자들이 신뢰할 수 있는 서버를 통해 Bob의 공개키를 안전하게 얻을 수 있다.  
-다만, 이 방법은 많은 사용자가 몰리게 되면 서버에 과부하가 생길 수 있다는 단점이 있다.
-
-### 인증서를 이용한 공개키 인증
-또 다른 방식으로는 인증서를 사용하는 공개키 인증 방법이 있다. Bob이 인증 기관(Certificate Authority, CA)에 자신의 공개키에 대한 인증서를 발급받으면, Bob이 공개키를 다른 사람에게 전달할 때 이 인증서도 함께 제공할 수 있다. 인증서에는 CA의 전자 서명이 포함되어 있어, 공격자가 이를 위조하기가 거의 불가능하다.
-이로써 Alice가 Bob의 공개키와 인증서를 함께 전달받았을 때, 인증서를 검증함으로써 이 공개키가 정말 Bob의 것인지 신뢰할 수 있게 된다. 또한 많은 사용자가 동시에 접근하더라도 서버에 집중되는 병목현상이 크게 감소하므로, 시스템 과부하 문제 역시 어느 정도 해소될 수 있다.
+On the other hand, if a public key cryptosystem is applied, users do not necessarily have to go through a trusted authority, and they only need to manage their own private key securely. As a result, it becomes relatively simple and safe to design a key exchange protocol.
 
 
 
-## 주요 구성 요소
+## Publish the Public Key
+In a public key cryptosystem, the most important aspect is to securely publish the public key. For example, suppose Bob has published his public key on the internet. Alice can obtain Bob’s public key from the internet in order to send him a message. However, if there is no way for Alice to verify that the public key she obtained truly belongs to Bob, a problem arises. If a malicious attacker disguises their own public key as though it were Bob’s, then any message Alice sends would go to the attacker instead of Bob, posing a serious security threat.
+
+### Publishing Public Keys through a Trusted Server
+To address the issue described above, one can consider publishing the public key in a secure environment via a trusted server. This trusted server verifies that Bob’s public key indeed belongs to Bob, making it very difficult for an attacker to pass off their own public key as Bob’s. For this to work, Bob must prove to the server that he really is Bob before registering his public key. Once the server verifies Bob’s identity, Bob’s public key is officially registered. This allows users to safely obtain Bob’s public key through the trusted server.  
+However, one drawback of this method is the potential server overload if many users attempt to access it simultaneously.
+
+### Public Key Certification via Certificates
+Another way to address public key authentication is to use **certificates**. Bob can have his public key certified by a **Certificate Authority (CA)**. Then, whenever Bob shares his public key with someone, he can also provide the certificate. Because the certificate includes the CA’s digital signature, it is nearly impossible for an attacker to forge.  
+As a result, when Alice receives Bob’s public key along with the certificate, she can verify the certificate to trust that the key genuinely belongs to Bob. Moreover, even when many users access the key at the same time, the bottleneck that could overload a single server is greatly reduced, thereby mitigating potential system overload.
+
+
+
+## Components
 ### CA, Certificate Authority
-* 인증서를 발급·관리·폐지하는 신뢰할 수 있는 기관이다.
-* 신원 확인을 거쳐 사용자에게 디지털 인증서를 발급한다.
-* 사용자는 인증 기관에게 공개키와 자신의 신분을 증명할 수 있는 아이디 및 정보를 전송한다. 개인키는 사용자만이 알고 있고 인증 기관에게 전송하지 않기 때문에, 인증 기관으로부터 개인키가 노출되는 문제는 발생하지 않는다.
+* A trusted entity responsible for issuing, managing, and revoking certificates.
+- Verifies the identity of users and issues digital certificates accordingly.
+- Users send their public key and identity information (e.g., ID) to the Certificate Authority (CA). Since the private key is held only by the user and is not sent to the CA, there is no risk of the private key being exposed through the CA.
 
 ### RA, Registration Authority
-* CA를 대신하여 사용자의 신원 확인과 인증서 발급 요청을 검증한다.
+* Acts on behalf of the CA by verifying user identities and validating certificate issuance requests.
 
 ### Certificate
-* 공개키와 소유자의 신원 정보, 발급 기관 및 유효 기관 등이 포함된 전자 문서이다.
-* X.509 표준 형식을 가장 많이 사용한다.
+* An electronic document that includes a public key, the owner’s identity, the issuing authority, and the valid period, among other information.
+- The **X.509** standard format is the most commonly used.
 
 
 
 ## X.509
-인증서에 들어가는 정보는 공개키 소유자의 정보뿐만 아니라 인증서의 유효기간, 인증 기관의 전자 서명 등 다양한 정보가 포함된다. 인증서가 널리 사용되며 인증서에 대한 기준이 필요하게 되었고, X.509 공개키 인증서 표준이 제정되어 가장 많이 사용되고 있다.
-X.509의 형식은 다음과 같다:
+A certificate contains not only the public key owner’s information but also various other data, such as the certificate’s valid period and the Certificate Authority’s digital signature. As certificates became widely used, a need arose for a standardized set of criteria, leading to the establishment of the X.509 public key certificate standard, which is now the most widely utilized.
+
+The X.509 format is as follows:
 
 | Field                     |
 | ------------------------- |
@@ -54,53 +54,53 @@ X.509의 형식은 다음과 같다:
 | Subject Unique Identifier |
 | Extensions                |
 | Certificate Signature     |
-* Version: 인증서의 버전
-* Serial Number: 인증서를 유일하게 식별할 수 있도록 하는 고유번호
-* Algorithm ID: 인증 기관이 인증서에 서명하기 위하여 사용한 알고리즘(RSA, DSA 등)
-* Issuer: 인증 기관 이름
-* Validity period: 인증서의 유효 기간
-* Subject name: 공개키를 소유한 개체
-* Subject Public Key Info: 공개키와 사용된 알괼즘
-* Issuer Unique Identifier: 두 발급자가 동일한 issuer name을 사용할 수 있도록 하는 항목(optional)
-* Subject Unique Identifier: 두 소유자가 동일한 subject name을 사용할 수 있도록 하는 항목(optional)
-* Extensions: 문자열, 날짜 혹은 데이터 구조 등에 대한 개체 식별자(optional)
-* Certificate Signature: 위의 정보들을 이용해 생성한 해시 값을 만들고 인증 기관이 전자 서명
+- **Version**: The version of the certificate
+- **Serial Number**: A unique number allowing the certificate to be distinctly identified
+- **Algorithm ID**: The algorithm (e.g., RSA, DSA) used by the Certificate Authority to sign the certificate
+- **Issuer**: The name of the Certificate Authority
+- **Validity period**: The period during which the certificate is valid
+- **Subject name**: The entity that owns the public key
+- **Subject Public Key Info**: The public key itself and the algorithm used
+- **Issuer Unique Identifier**: An optional field enabling multiple issuers to use the same issuer name
+- **Subject Unique Identifier**: An optional field enabling multiple subjects to use the same subject name
+- **Extensions**: Optional object identifiers for strings, dates, or data structures, etc.
+- **Certificate Signature**: A digital signature generated by the Certificate Authority on the hash of the above information
 
 
 
-## 동작 원리
-### 인증서 발급
-1. 사용자는 RA를 통해 자신의 신원을 증명한다.
-2. RA가 신원 검증을 마치면 CA에 인증서 발급을 요청한다.
-3. CA는 사용자에게 공개키/개인키 쌍을 생성하도록 하거나 CA 측에서 생성한 뒤 전달하여 발급 절차를 수행한다.
-4. CA는 디지털 인증서에 서명하여 사용자게에 발급한다.
+## Operation Principle
+### Certificate Issuance
+1. The user verifies their identity through the RA.
+2. Once the RA completes the identity verification, it requests certificate issuance from the CA.
+3. The CA either instructs the user to generate a public/private key pair or generates it on the user’s behalf and then proceeds with the issuance process.
+4. The CA signs the digital certificate and issues it to the user.
 
-### 인증서 사용
-Alice가 Bob의 공개키를 통해 통신을 하려고 하는 상황이라고 가정하자.
-1. Bob은 안전한 통신을 하기 위해 Alice에게 자신의 인증서를 제공한다.
-2. Alice는 이 인증서가 유효한지 검증한다.
-3. 인증서가 유효하다면 Alice는 Bob의 공개키를 이용해 암호화된 메시지를 전송한다.
-4. Bob은 자신의 개인키를 이용해 메시지를 복호화한다.
+### Certificate Usage
+Let us assume Alice wants to communicate with Bob using Bob’s public key.
+1. Bob provides his certificate to Alice to establish secure communication.
+2. Alice verifies the validity of Bob’s certificate.
+3. If the certificate is valid, Alice uses Bob’s public key to send an encrypted message.
+4. Bob decrypts the message with his private key.
 
-### 인증서 폐지 및 갱신
-1. 필요한 경우 CA는 인증서를 폐지한다. 폐지된 인증서는 CRL 목록에 올라가거나 OCSP를 통해 무효 처리된다.
-> [!Question] CRL과 OCSP가 무엇인가?
-> 유효 기간 이내에 폐지된 인증서들을 하나의 목록으로 구성한 것을 CRL(Certificate Revoked List)라고 한다. CRL은 인증 기관이 직접 작성하고 관리한다.
-> 검증자의 개별 요청을 받아 응답하여 인증서의 상태를 확인하는 것을 OCSP(Online Certificate Status Protocol)이라고 한다. 폐지된 인증서의 양이 많을 수록 CRL의 사이즈가 커지는 문제점이 있으므로, 일반적으로는 OCSP를 적용한 시스템이 더 효율적이다.
-2. 인증서 유효기간이 만료되기 전, 새로 갱신 발급을 요청하여 갱신된 인증서를 발급받을 수도 있다.
+### Certificate Revocation and Renewal
+1. If necessary, the CA revokes the certificate. A revoked certificate is marked as invalid via the CRL or OCSP.
+> [!Question] What are **CRL** and **OCSP**?
+> A CRL (Certificate Revoked List) is a list of certificates that have been revoked before their expiration date. It is created and managed by the Certificate Authority.
+> OCSP (Online Certificate Status Protocol) checks the status of a certificate by responding to individual requests from verifiers. When there are many revoked certificates, the size of the CRL can become large, making an OCSP-based system generally more efficient.
+2. Before the certificate’s validity period expires, one can request a new issuance and receive a renewed certificate.
 
 
 
-## 인증 기관들 간 신뢰 모델
-하나의 인증 기관이 모든 사용자의 공개키를 인증하는 것은 현실적으로 불가능하기 때문에, 국가별 또는 목적에 따라 다양한 인증 기관이 존재한다. 따라서 인증 기관들은 추가적인 인증서 발급 없이 다른 인증 기관에서 발급된 인증서를 동일하게 인정할 수 있는 모델을 필요로 한다. 이와 관련하여 대표적으로 **Hierarchical Model**과 **Mesh Model**이 있다.
+## Trust Models Among Certification Authorities
+Because it is practically impossible for a single Certification Authority (CA) to authenticate the public keys of all users, various CAs exist according to each country or purpose. Therefore, CAs require a model that allows certificates issued by other CAs to be recognized without additional certificate issuance. Two representative models in this context are the **Hierarchical Model** and the **Mesh Model**.
 
 ### Hierarchical Model
-가장 상위 계층에 **루트 인증 기관**을 두어 계층적인 인증이 가능하도록 한 모델이다.
-- **계층 모델**에서는 상위 계층 인증 기관이 바로 아래 계층에 해당하는 인증 기관의 인증서를 발급해 준다.
-- 최상위 계층인 루트 인증 기관은 **self-signing** 방법을 이용하여 자기 자신에게 인증서를 발급한다.
-- 이 모델은 상대적으로 규모가 작은 집단에서 적합하다.
+This model places a **root CA** at the topmost level so that a tiered certification structure is possible.
+- In a **hierarchical model**, the CA in an upper level issues certificates to the CA directly below it.
+- The root CA, located at the highest level, issues a certificate to itself using a **self-signing** method.
+- This model is generally suited for relatively smaller-scale groups.
 
 ### Mesh Model
-규모가 커지고 복잡해지는 경우에는 **Mesh Model**이 적합하다.
-- 이 모델에서는 여러 개의 루트 인증 기관들이 상호 신뢰할 수 있도록 서로 인증서를 발급해 준다.
-- 수직적인 신뢰 관계가 필요한 계층 모델과 달리, Mesh Model에서는 **수평적인 신뢰 관계**를 기반으로 하며, n개의 루트 인증 기관이 존재할 경우 필요해지는 상호 인증서의 수는 $\frac{n(n-1)}{2}$​개이다.
+When the network is large and complex, the **mesh model** is more appropriate.
+- In this model, multiple root CAs issue certificates to each other, establishing **mutual trust**.
+- Unlike the hierarchical model, which requires a vertical trust relationship, the mesh model is based on a **horizontal trust relationship**. If there are nnn root CAs, the number of cross-certificates needed is $\frac{n(n-1)}{2}$.
